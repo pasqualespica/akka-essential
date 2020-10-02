@@ -4,6 +4,9 @@ import scala.concurrent.Future
 
 object AdvancedRecap extends App {
 
+  println("*******************")
+  println("AdvancedRecap")
+  println("*******************")
   // partial functions
   val partialFunction: PartialFunction[Int, Int] = {
     case 1 => 42
@@ -24,19 +27,20 @@ object AdvancedRecap extends App {
     case _ => 0
   }
 
+
   // lifting
   val lifted = partialFunction.lift // total function Int => Option[Int]
   lifted(2) // Some(65)
   lifted(5000) // None
 
   // orElse
-  val pfChain = partialFunction.orElse[Int, Int] {
-    case 60 => 9000
-  }
-
-  pfChain(5) // 999 per partialFunction
-  pfChain(60) // 9000
-  pfChain(457) // throw a MatchError
+//  val pfChain = partialFunction.orElse[Int, Int] {
+//    case 60 => 9000
+//  }
+//
+//  pfChain(5) // 999 per partialFunction
+//  pfChain(60) // 9000
+//  pfChain(457) // throw a MatchError
 
   // type aliases
   type ReceiveFunction = PartialFunction[Any, Unit]
@@ -51,7 +55,7 @@ object AdvancedRecap extends App {
   implicit val timeout = 3000
   def setTimeout(f: () => Unit)(implicit timeout: Int) = f()
 
-  setTimeout(() => println("timeout"))// extra parameter list omitted
+  setTimeout(() => println(s"timeout $timeout"))// extra parameter list omitted
 
   // implicit conversions
   // 1) implicit defs
@@ -86,6 +90,10 @@ object AdvancedRecap extends App {
     implicit val personOrdering: Ordering[Person] = Ordering.fromLessThan((a, b) => a.name.compareTo(b.name) < 0)
   }
 
-  List(Person("Bob"), Person("Alice")).sorted
+  val res = List(Person("Bob"), Person("Alice")).sorted
+  println(res)
   // List(Person(Alice), Person(Bob))
+
+
+
 }

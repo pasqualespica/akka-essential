@@ -4,29 +4,29 @@ import scala.util.Try
 
 object GeneralRecap extends App {
 
-  val aCondition : Boolean = false // not re-assign
+  println("*******************")
+  println("GeneralRecap")
+  println("*******************")
+  val aCondition: Boolean = false
 
   var aVariable = 42
-  aVariable += 1
+  aVariable += 1 // aVariable = 43
 
-  // expression
-  val aCondVal = if (aCondition) 42 else 54
+  // expressions
+  val aConditionedVal = if (aCondition) 42 else 65
 
   // code block
   val aCodeBlock = {
-    if ( aCondition ) 74
-    54
+    if (aCondition) 74
+    56
   }
 
   // types
   // Unit
-  val theUnit = println("Hello Scala ...")
+  val theUnit = println("Hello, Scala")
 
-  // function
-  def aFunc(x : Int) : Int = x + 1
-
+  def aFunction(x: Int): Int = x + 1
   // recursion - TAIL recursion
-  @scala.annotation.tailrec
   def factorial(n: Int, acc: Int): Int =
     if (n <= 0) acc
     else factorial(n - 1, acc * n)
@@ -37,12 +37,11 @@ object GeneralRecap extends App {
   class Dog extends Animal
   val aDog: Animal = new Dog
 
-  // abstract class
   trait Carnivore {
-    def eat(a: Animal): Unit // abstract method
+    def eat(a: Animal): Unit
   }
 
-  class Crocodile extends Animal with Carnivore {  // 1 class and many traits
+  class Crocodile extends Animal with Carnivore {
     override def eat(a: Animal): Unit = println("crunch!")
   }
 
@@ -89,19 +88,14 @@ object GeneralRecap extends App {
   // Int => Int === Function1[Int, Int]
 
   // FP is all about working with functions as first-class
-  val pippo : List[Int] = List(1,2,3).map(incrementer)
-  println(s"Lista incrementato $pippo")
-
-  // map = HOF - higher-Order function
+  List(1,2,3).map(incrementer)
+  // map = HOF
 
   // for comprehensions
   val pairs = for {
-    num <- List(1,2,3,4, 5)
+    num <- List(1,2,3,4)
     char <- List('a', 'b', 'c', 'd')
   } yield num + "-" + char
-
-  println(s"for comprehensions $pairs")
-
 
   // List(1,2,3,4).flatMap(num => List('a', 'b', 'c', 'd').map(char => num + "-" + char))
 
@@ -128,10 +122,6 @@ object GeneralRecap extends App {
     case _ => "I don't know my name"
   }
 
-  println(greeting)
-
   // ALL THE PATTERNS
-
-
 
 }
