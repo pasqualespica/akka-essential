@@ -6,11 +6,19 @@ import part2actors.ChildActors.CreditCard.{AttachToAccount, CheckStatus}
 object ChildActors extends App {
 
   // Actors can create other actors
+  println("*******************")
+  println("ChildActors")
+  println("*******************")
+
 
   object Parent {
     case class CreateChild(name: String)
     case class TellChild(message: String)
   }
+
+  // -----------
+  // Parent
+  // -----------
   class Parent extends Actor {
     import Parent._
 
@@ -27,6 +35,9 @@ object ChildActors extends App {
     }
   }
 
+  // -----------
+  // Child
+  // -----------
   class Child extends Actor {
     override def receive: Receive = {
       case message => println(s"${self.path} I got: $message")
@@ -46,16 +57,25 @@ object ChildActors extends App {
 
   /*
     Guardian actors (top-level)
-    - /system = system guardian
-    - /user = user-level guardian
+    - /system = system guardian ( ex. manage logging system actor )
+    - /user = user-level guardian ( ex. akka://ParentChildDemo/user/account )
     - / = the root guardian
    */
+
+
+  //
+  // Find an ACTOR by PATH !!!!!
+  //
 
   /**
     * Actor selection
     */
-  val childSelection = system.actorSelection("/user/parent/child2")
+  val childSelection = system.actorSelection("/user/parent/child")
   childSelection ! "I found you!"
+
+//  GoTo in dead letter !!!!!             child2 doesn't exists !!!!
+//  val childSelection = system.actorSelection("/user/parent/childw")
+//  childSelection ! "I found you!"
 
   /**
     * Danger!

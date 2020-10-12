@@ -5,7 +5,14 @@ import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 object ChildActorsExercise extends App {
 
   // Distributed Word counting
+  println("*******************")
+  println("ChildActorsExercise")
+  println("*******************")
 
+
+  //
+  // WordCounterMaster
+  //
   object WordCounterMaster {
     case class Initialize(nChildren: Int)
     case class WordCountTask(id: Int, text: String)
@@ -40,6 +47,9 @@ object ChildActorsExercise extends App {
     }
   }
 
+  //
+  // WordCounterWorker
+  //
   class WordCounterWorker extends Actor {
     import WordCounterMaster._
 
@@ -50,6 +60,9 @@ object ChildActorsExercise extends App {
     }
   }
 
+  //
+  // TestActor
+  //
   class TestActor extends Actor {
     import WordCounterMaster._
 

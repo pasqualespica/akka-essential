@@ -24,7 +24,10 @@ libraryDependencies ++= Seq(
 
 // Actor System
 //mainClass in (Compile, run) := Some("part2actors.ActorsIntro")
-mainClass in (Compile, run) := Some("part2actors.ActorCapabilities")
-
-
+//mainClass in (Compile, run) := Some("part2actors.ActorCapabilities")
+//mainClass in (Compile, run) := Some("part2actors.ChangingActorBehavior")
+//mainClass in (Compile, run) := Some("part2actors.ChildActors")
+//mainClass in (Compile, run) := Some("part2actors.ChildActorsExercise")
+//mainClass in (Compile, run) := Some("part2actors.ActorLoggingDemo")
+mainClass in (Compile, run) := Some("part2actors.IntroAkkaConfig")
 

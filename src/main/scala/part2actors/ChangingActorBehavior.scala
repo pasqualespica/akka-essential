@@ -4,7 +4,15 @@ import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 
 object ChangingActorBehavior extends App {
 
+  println("*******************")
+  println("ChangingActorBehavior")
+  println("*******************")
 
+  // ************************
+  // Kid
+  // ************************
+
+  // https://docs.scala-lang.org/overviews/scala-book/case-objects.html
   object FussyKid {
     case object KidAccept
     case object KidReject
@@ -26,6 +34,9 @@ object ChangingActorBehavior extends App {
     }
   }
 
+  // ************************
+  // StatelessFussyKid
+  // ************************
   class StatelessFussyKid extends Actor {
     import FussyKid._
     import Mom._
@@ -33,18 +44,21 @@ object ChangingActorBehavior extends App {
     override def receive: Receive = happyReceive
 
     def happyReceive: Receive = {
-      case Food(VEGETABLE) => context.become(sadReceive, false) // change my receive handler to sadReceive
+      case Food(VEGETABLE) => context.become(sadReceive, false) // change my receive handler to sadReceive  : TRUE replace definitely - FALSE use a stack
       case Food(CHOCOLATE) =>
       case Ask(_) => sender() ! KidAccept
     }
 
     def sadReceive: Receive = {
-      case Food(VEGETABLE) => context.become(sadReceive, false)
-      case Food(CHOCOLATE) => context.unbecome()
+      case Food(VEGETABLE) => context.become(sadReceive, false)  // PUSH
+      case Food(CHOCOLATE) => context.unbecome() // POP operation
       case Ask(_) => sender() ! KidReject
     }
   }
 
+  // ************************
+  // Mom
+  // ************************
   object Mom {
     case class MomStart(kidRef: ActorRef)
     case class Food(food: String)
@@ -86,32 +100,32 @@ object ChangingActorBehavior extends App {
     mom receives KidReject
    */
 
-
-  /*
-
-  context.become
-
-    Food(veg) -> stack.push(sadReceive)
-    Food(chocolate) -> stack.push(happyReceive)
-
-    Stack:
-    1. happyReceive
-    2. sadReceive
-    3. happyReceive
-   */
-
-  /*
-    new behavior
-    Food(veg)
-    Food(veg)
-    Food(choco)
-    Food(choco)
-
-    Stack:
-
-    1. happyReceive
-   */
-
+//
+//  /*
+//
+//  context.become
+//
+//    Food(veg) -> stack.push(sadReceive)                                using false  ( STACK )
+//    Food(chocolate) -> stack.push(happyReceive)
+//
+//    Stack:
+//    1. happyReceive                    STAck
+//    2. sadReceive                       | |
+//    3. happyReceive                     | |
+//   */
+//
+//  /*
+//    new behavior
+//    Food(veg)
+//    Food(veg)
+//    Food(choco)
+//    Food(choco)
+//
+//    Stack:
+//
+//    1. happyReceive
+//   */
+//
   /**
     * Exercises
     * 1 - recreate the Counter Actor with context.become and NO MUTABLE STATE
@@ -153,6 +167,9 @@ object ChangingActorBehavior extends App {
   case class Vote(candidate: String)
   case object VoteStatusRequest
   case class VoteStatusReply(candidate: Option[String])
+  // ---------------------
+  // Citizen
+  // ---------------------
   class Citizen extends Actor {
     override def receive: Receive = {
       case Vote(c) => context.become(voted(c))
@@ -164,6 +181,9 @@ object ChangingActorBehavior extends App {
     }
   }
 
+  // ---------------------
+  // VoteAggregator
+  // ---------------------
   case class AggregateVotes(citizens: Set[ActorRef])
   class VoteAggregator extends Actor {
     override def receive: Receive = awaitingCommand

@@ -5,6 +5,10 @@ import akka.event.Logging
 
 object ActorLoggingDemo extends App {
 
+  println("*******************")
+  println("ActorLoggingDemo")
+  println("*******************")
+
   class SimpleActorWithExplicitLogger extends Actor {
     // #1 - explicit logging
     val logger = Logging(context.system, this)

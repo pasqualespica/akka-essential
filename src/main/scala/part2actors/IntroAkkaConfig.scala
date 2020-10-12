@@ -5,6 +5,11 @@ import com.typesafe.config.ConfigFactory
 
 object IntroAkkaConfig extends App {
 
+
+  println("*******************")
+  println("IntroAkkaConfig")
+  println("*******************")
+
   class SimpleLoggingActor extends Actor with ActorLogging {
     override def receive: Receive = {
       case message => log.info(message.toString)
@@ -17,7 +22,7 @@ object IntroAkkaConfig extends App {
   val configString =
     """
       | akka {
-      |   loglevel = "ERROR"
+      |   loglevel = "DEBUG"
       | }
     """.stripMargin
 
@@ -29,6 +34,7 @@ object IntroAkkaConfig extends App {
 
   /**
     * 2 - config file
+    * by default Akka read main/resources/application.conf
     */
 
   val defaultConfigFileSystem = ActorSystem("DefaultConfigFileDemo")
